@@ -1,0 +1,58 @@
+{
+  "require": {
+    "php": "^8.2",
+    "ext-json": "*",
+    "fig/http-message-util": "^1.1",
+    "monolog/monolog": "^3",
+    "nyholm/psr7": "^1",
+    "nyholm/psr7-server": "^1",
+    "php-di/php-di": "^7",
+    "selective/basepath": "^2",
+    "slim/php-view": "^3.2",
+    "slim/psr7": "^1.6",
+    "slim/slim": "^4"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3",
+    "phpstan/phpstan": "1.*",
+    "phpunit/phpunit": "^11.0",
+    "selective/test-traits": "^4",
+    "squizlabs/php_codesniffer": "^3"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Test\\": "tests/"
+    }
+  },
+  "scripts": {
+    "start": "php -S localhost:8080 -t public/",
+    "test": "phpunit --configuration phpunit.xml --do-not-cache-result --colors=always --display-deprecations",
+    "cs:check": [
+      "@putenv PHP_CS_FIXER_IGNORE_ENV=1",
+      "php-cs-fixer fix --dry-run --format=txt --verbose --diff --config=.cs.php --ansi"
+    ],
+    "cs:fix": [
+      "@putenv PHP_CS_FIXER_IGNORE_ENV=1",
+      "php-cs-fixer fix --config=.cs.php --ansi --verbose"
+    ],
+    "sniffer:check": "phpcs --standard=phpcs.xml",
+    "sniffer:fix": "phpcbf --standard=phpcs.xml",
+    "stan": "phpstan analyse -c phpstan.neon --no-progress --ansi",
+    "test:all": [
+      "@cs:check",
+      "@sniffer:check",
+      "@stan",
+      "@test"
+    ],
+    "test:coverage": "php -d xdebug.mode=coverage -r \"require 'vendor/bin/phpunit';\" -- --configuration phpunit.xml --do-not-cache-result --colors=always --coverage-clover runtime/logs/clover.xml --coverage-html runtime/coverage"
+  },
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
+  }
+}

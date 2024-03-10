@@ -1,0 +1,44 @@
+version: '3.9'
+
+volumes:
+    logs:
+        driver: local
+
+networks:
+    app-tier:
+        driver: bridge
+
+services:
+    memcached:
+        image: memcached:latest
+        ports:
+            - 11211:11211
+        networks:
+            - app-tier
+
+    mongodb:
+        image: mongo:latest
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=docker
+            - MONGO_INITDB_ROOT_PASSWORD=mongopw
+        ports:
+            - 27017:27017
+        volumes:
+            - ~/docker/mongo/data/:/data/db/
+            - ~/runtime/logs:/var/logs
+        networks:
+            - app-tier
+
+    app:
+        build: docker
+        working_dir: /var/www
+        command: php -S 0.0.0.0:8080 -t public
+        environment:
+            docker: "true"
+        ports:
+            - 8080:8080
+        volumes:
+            - .:/var/www
+            - ~/runtime/logs:/var/logs
+        networks:
+            - app-tier
