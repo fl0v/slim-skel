@@ -17,6 +17,11 @@ return [
         'charset' => 'UTF-8',
         'host' => APP_HOST,
     ],
+    'error' => [
+        'displayErrorDetails' => APP_DEBUG,
+        'logError'            => true,
+        'logErrorDetails'     => true,
+    ],
     'logger' => [
         'path' => APP_ROOT . '/runtime/logs/app.log',
     ],

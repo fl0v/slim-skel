@@ -1,5 +1,7 @@
 <?php
 
+use App\Helper\Config;
+use App\Helper\View;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -9,8 +11,11 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 
 return [
-    // Application settings
-    'settings' => static fn () => require __DIR__ . '/settings.php',
+    //'settings' => static fn () => require __DIR__ . '/settings.php',
+
+    Config::class => function () {
+        return new Config(include(APP_ROOT . '/config/settings.php'));
+    },
 
     App::class => function (ContainerInterface $container) {
         $app = AppFactory::createFromContainer($container);
@@ -30,9 +35,9 @@ return [
         return $container->get(Psr17Factory::class);
     },
 
-    LoggerInterface::class => function (ContainerInterface $container) {
-        $settings = $container->get('settings')['logger'];
-        $logger = new Monolog\Logger($settings['name'] ?? $container->get('settings')['app']['id']);
+    LoggerInterface::class => function (Config $config) {
+        $settings = $config->get('logger');
+        $logger = new Monolog\Logger($settings['name'] ?? $config->get('app.id'));
         $logger->pushProcessor(new Monolog\Processor\UidProcessor());
         $logger->pushHandler(
             (new Monolog\Handler\RotatingFileHandler(
@@ -51,5 +56,13 @@ return [
         );
 
         return $logger;
+    },
+
+    View::class => function (ContainerInterface $container, Config $config) {
+        $settings = $config->get('view');
+        $view = new View($settings['path']);
+        $view->setDebug($settings['debug'] ?? false);
+        $view->setConfig($container->get(Config::class));
+        return $view;
     },
 ];
