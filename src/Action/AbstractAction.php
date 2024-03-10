@@ -14,7 +14,8 @@ abstract class AbstractAction
         protected ContainerInterface $container,
         protected Config $config,
         protected View $view,
-    ) {}
+    ) {
+    }
 
     protected function getLogger(): LoggerInterface
     {

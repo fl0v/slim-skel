@@ -11,10 +11,10 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 
 return [
-    //'settings' => static fn () => require __DIR__ . '/settings.php',
+    // 'settings' => static fn () => require __DIR__ . '/settings.php',
 
     Config::class => function () {
-        return new Config(include(APP_ROOT . '/config/settings.php'));
+        return new Config(include APP_ROOT . '/config/settings.php');
     },
 
     App::class => function (ContainerInterface $container) {
@@ -63,6 +63,7 @@ return [
         $view = new View($settings['path']);
         $view->setDebug($settings['debug'] ?? false);
         $view->setConfig($container->get(Config::class));
+
         return $view;
     },
 ];

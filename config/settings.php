@@ -19,8 +19,8 @@ return [
     ],
     'error' => [
         'displayErrorDetails' => APP_DEBUG,
-        'logError'            => true,
-        'logErrorDetails'     => true,
+        'logError' => true,
+        'logErrorDetails' => true,
     ],
     'logger' => [
         'path' => APP_ROOT . '/runtime/logs/app.log',

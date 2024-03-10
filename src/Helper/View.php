@@ -33,6 +33,7 @@ class View extends \Slim\Views\PhpRenderer
     public function withLayout(string $layout = ''): static
     {
         $this->setLayout($layout);
+
         return $this;
     }
 }

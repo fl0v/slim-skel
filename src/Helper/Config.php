@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use Exception;
+
 class Config
 {
     private array $config;
@@ -14,7 +16,10 @@ class Config
     }
 
     /**
-     * @throws \Exception
+     * @param string $key
+     * @param mixed|null $default
+     *
+     * @throws Exception
      */
     public function get(string $key = '', mixed $default = null): mixed
     {

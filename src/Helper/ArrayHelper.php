@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use ArrayAccess;
+use Closure;
+use Exception;
+
 class ArrayHelper
 {
     /**
@@ -58,21 +62,22 @@ class ArrayHelper
         $data[$key] = $value;
     }
 
-
     /**
      * @param array|object $array array or object to extract value from
-     * @param string|\Closure|array $key key name of the array element, an array of keys or property name of the object,
+     * @param string|Closure|array $key key name of the array element, an array of keys or property name of the object,
      * or an anonymous function returning the value. The anonymous function signature should be:
      * `function($array, $defaultValue)`.
      * The possibility to pass an array of keys is available since version 2.0.4.
      * @param mixed $default the default value to be returned if the specified array key does not exist. Not used when
      * getting value from an object.
+     *
+     * @throws Exception
+     *
      * @return mixed the value of the element if found, default value otherwise
-     * @throws \Exception
      */
     public static function getValue(mixed $array, mixed $key, mixed $default = null): mixed
     {
-        if ($key instanceof \Closure) {
+        if ($key instanceof Closure) {
             return $key($array, $default);
         }
 
@@ -105,8 +110,8 @@ class ArrayHelper
             // it is not reliably possible to check whether a property is accessible beforehand
             try {
                 return $array->$key;
-            } catch (\Exception $e) {
-                if ($array instanceof \ArrayAccess) {
+            } catch (Exception $e) {
+                if ($array instanceof ArrayAccess) {
                     return $default;
                 }
                 throw $e;
@@ -117,7 +122,10 @@ class ArrayHelper
     }
 
     /**
-     * @return array returned array will have strict structure that matches the provided keys with values from data.
+     * @param array $data
+     * @param array $keys
+     *
+     * @return array returned array will have strict structure that matches the provided keys with values from data
      */
     public static function export(array $data, array $keys): array
     {
@@ -125,6 +133,7 @@ class ArrayHelper
         foreach ($keys as $path) {
             $result = array_merge($result, self::exportKeyPath($data, $path));
         }
+
         return $result;
     }
 
@@ -139,7 +148,7 @@ class ArrayHelper
             return [$first => $data[$first] ?? $default]; // export as array
         }
         $data = !empty($data[$first]) && is_array($data[$first]) ? $data[$first] : [];
+
         return [$first => self::exportKeyPath($data, $keyParts, $default)]; // go deeper for remaining key parts
     }
-
 }
