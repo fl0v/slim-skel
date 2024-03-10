@@ -12,10 +12,10 @@ sudo usermod -a -G ${APP_GROUP} ${APP_OWNER}
 sudo chown -R ${APP_OWNER}:${APP_GROUP} ${APP_ROOT}
 
 # Set correct permissions for directories 
-sudo find ${APP_ROOT} -type f -exec chmod 644 {} \;
+#sudo find ${APP_ROOT} -type f -exec chmod 644 {} \;
 
 # Set correct permissions for files 
-sudo find ${APP_ROOT} -type d -exec chmod 755 {} \;
+#sudo find ${APP_ROOT} -type d -exec chmod 755 {} \;
 
 # Set webserver group for storage + cache folders
 sudo chgrp -R ${APP_GROUP} ${APP_ROOT}/runtime
