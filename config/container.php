@@ -1,13 +1,16 @@
 <?php
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
 
 return [
-    'settings' => function () {
-        return require __DIR__ . '/settings.php';
-    },
+    // Application settings
+    'settings' => static fn () => require __DIR__ . '/settings.php',
 
     App::class => function (ContainerInterface $container) {
         $app = AppFactory::createFromContainer($container);
@@ -16,5 +19,37 @@ return [
         (require __DIR__ . '/middleware.php')($app);
 
         return $app;
+    },
+
+    // HTTP factories
+    ResponseFactoryInterface::class => function (ContainerInterface $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    ServerRequestFactoryInterface::class => function (ContainerInterface $container) {
+        return $container->get(Psr17Factory::class);
+    },
+
+    LoggerInterface::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings')['logger'];
+        $logger = new Monolog\Logger($settings['name'] ?? $container->get('settings')['app']['id']);
+        $logger->pushProcessor(new Monolog\Processor\UidProcessor());
+        $logger->pushHandler(
+            (new Monolog\Handler\RotatingFileHandler(
+                $settings['path'],
+                $settings['maxFiles'] ?? 3,
+                $settings['level'] ?? Monolog\Logger::DEBUG,
+            ))->setFormatter(
+                new Monolog\Formatter\LineFormatter(null, null, false, true)
+            ),
+        );
+        $logger->pushHandler(
+            new Monolog\Handler\StreamHandler(
+                $settings['path'],
+                $settings['level'] ?? Monolog\Logger::DEBUG,
+            ),
+        );
+
+        return $logger;
     },
 ];

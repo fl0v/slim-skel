@@ -6,11 +6,6 @@ use App\Test\Traits\AppTestTrait;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Test.
- *
- * @coversDefaultClass \App\Action\Home\HomeAction
- */
 class HomeActionTest extends TestCase
 {
     use AppTestTrait;
@@ -21,7 +16,7 @@ class HomeActionTest extends TestCase
         $response = $this->app->handle($request);
 
         $this->assertSame(StatusCodeInterface::STATUS_OK, $response->getStatusCode());
-        $this->assertResponseContains($response, 'Welcome!');
+        $this->assertResponseContains($response, 'Hello, World!');
     }
 
     public function testPageNotFound(): void

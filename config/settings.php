@@ -1,10 +1,13 @@
 <?php
 
-// Should be set to 0 in production
-error_reporting(E_ALL);
+// phpcs:disable
 
-// Should be set to '0' in production
-ini_set('display_errors', '1');
+include_once 'env.php';
+
+\defined('APP_ENV') or \define('APP_ENV', 'production');
+\defined('APP_DEBUG') or \define('APP_DEBUG', false);
+\defined('APP_ROOT') or \define('APP_ROOT', dirname(__DIR__));
+\defined('APP_HOST') or \define('APP_HOST', 'slim.local');
 
 return [
     'app' => [
@@ -12,16 +15,13 @@ return [
         'id' => 'slim.demo',
         'lang' => 'en',
         'charset' => 'UTF-8',
-        'host' => 'localhost:8080',
+        'host' => APP_HOST,
     ],
-    'components' => [
-        'logger' => [
-            'path' => '/runtime/logs/app.log',
-            'debug' => true,
-        ],
-        'view' => [
-            'path' => '/templates',
-            'debug' => true,
-        ],
+    'logger' => [
+        'path' => APP_ROOT . '/runtime/logs/app.log',
+    ],
+    'view' => [
+        'path' => APP_ROOT . '/templates',
+        'debug' => APP_DEBUG,
     ],
 ];

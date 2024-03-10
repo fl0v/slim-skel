@@ -24,8 +24,8 @@ services:
         ports:
             - 27017:27017
         volumes:
-            - ~/docker/mongo/data/:/data/db/
-            - ~/runtime/logs:/var/logs
+            - ./docker/mongo/data/:/data/db/
+            - ./runtime/logs:/var/logs
         networks:
             - app-tier
 
@@ -39,6 +39,6 @@ services:
             - 8080:8080
         volumes:
             - .:/var/www
-            - ~/runtime/logs:/var/logs
+            - ./runtime/logs:/var/logs
         networks:
             - app-tier
