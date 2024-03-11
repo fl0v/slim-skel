@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action;
+namespace App\Http;
 
 use App\Helper\Config;
 use App\Helper\View;

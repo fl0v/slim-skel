@@ -10,6 +10,9 @@ Based on (https://github.com/odan/slim4-skeleton)
 
 ...
 
+## TODO
+- parser middleware
+
 ## Features
 
 This project is based on best practices and industry standards:

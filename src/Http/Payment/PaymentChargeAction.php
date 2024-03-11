@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Action;
+namespace App\Http\Payment;
 
+use App\Http\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-final class PingAction extends AbstractAction
+final class PaymentChargeAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response): Response
     {
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
-        $this->getLogger()->debug('test', [
+        $this->getLogger()->debug(__CLASS__, [
             'response' => $data,
         ]);
 

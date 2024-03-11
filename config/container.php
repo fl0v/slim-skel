@@ -3,7 +3,7 @@
 use App\Helper\Config;
 use App\Helper\View;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -11,13 +11,11 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 
 return [
-    // 'settings' => static fn () => require __DIR__ . '/settings.php',
-
     Config::class => function () {
         return new Config(include APP_ROOT . '/config/settings.php');
     },
 
-    App::class => function (ContainerInterface $container) {
+    App::class => function (Container $container) {
         $app = AppFactory::createFromContainer($container);
 
         (require __DIR__ . '/routes.php')($app);
@@ -27,11 +25,11 @@ return [
     },
 
     // HTTP factories
-    ResponseFactoryInterface::class => function (ContainerInterface $container) {
+    ResponseFactoryInterface::class => function (Container $container) {
         return $container->get(Psr17Factory::class);
     },
 
-    ServerRequestFactoryInterface::class => function (ContainerInterface $container) {
+    ServerRequestFactoryInterface::class => function (Container $container) {
         return $container->get(Psr17Factory::class);
     },
 
@@ -58,11 +56,11 @@ return [
         return $logger;
     },
 
-    View::class => function (ContainerInterface $container, Config $config) {
+    View::class => function (Config $config) {
         $settings = $config->get('view');
         $view = new View($settings['path']);
         $view->setDebug($settings['debug'] ?? false);
-        $view->setConfig($container->get(Config::class));
+        $view->setConfig($config);
 
         return $view;
     },
