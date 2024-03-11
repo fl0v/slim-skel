@@ -8,6 +8,11 @@ use ArrayAccess;
 use Closure;
 use Exception;
 
+/**
+ * @see https://github.com/yiisoft/yii2/blob/master/framework/helpers/BaseArrayHelper.php
+ * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Collections/Arr.php
+ * @see https://github.com/bayfrontmedia/php-array-helpers/blob/master/src/Arr.php
+ */
 class ArrayHelper
 {
     /**
@@ -18,7 +23,7 @@ class ArrayHelper
     public static function sanitiseKeys(array &$data, array $keys, ?string $replace = null): void
     {
         foreach ($keys as $path) {
-            static::setValue($data, $path, $replace, true, true);
+            static::set($data, $path, $replace, true, true);
         }
     }
 
@@ -30,7 +35,7 @@ class ArrayHelper
      * @param bool $strict if true and any part of the key path exists but is not array,
      *                     will be converted to array with existing not null value at index 0 (see unit tests)
      */
-    public static function setValue(array &$data, mixed $path, mixed $value, bool $onlyIfKeyExists = false, bool $strict = false): void
+    public static function set(array &$data, mixed $path, mixed $value, bool $onlyIfKeyExists = false, bool $strict = false): void
     {
         if (empty($path)) {
             return;
@@ -75,7 +80,7 @@ class ArrayHelper
      *
      * @return mixed the value of the element if found, default value otherwise
      */
-    public static function getValue(mixed $array, mixed $key, mixed $default = null): mixed
+    public static function get(mixed $array, mixed $key, mixed $default = null): mixed
     {
         if ($key instanceof Closure) {
             return $key($array, $default);
@@ -84,7 +89,7 @@ class ArrayHelper
         if (is_array($key)) {
             $lastKey = array_pop($key);
             foreach ($key as $keyPart) {
-                $array = static::getValue($array, $keyPart);
+                $array = static::get($array, $keyPart);
             }
             $key = $lastKey;
         }
@@ -98,7 +103,7 @@ class ArrayHelper
         }
 
         if ($key && ($pos = strrpos($key, '.')) !== false) {
-            $array = static::getValue($array, substr($key, 0, $pos), $default);
+            $array = static::get($array, substr($key, 0, $pos), $default);
             $key = substr($key, $pos + 1);
         }
 
@@ -150,5 +155,247 @@ class ArrayHelper
         $data = !empty($data[$first]) && is_array($data[$first]) ? $data[$first] : [];
 
         return [$first => self::exportKeyPath($data, $keyParts, $default)]; // go deeper for remaining key parts
+    }
+
+    /**
+     * Converts a multidimensional array to a single depth "dot" notation array,
+     * optionally prepending a string to each array key.
+     * The key values will never be an array, even if empty. Empty arrays will be dropped.
+     *
+     * @see https://stackoverflow.com/a/10424516
+     *
+     * @param array $array
+     * @param string $prepend
+     */
+    public static function dot(array $array, string $prepend = ''): array
+    {
+        $results = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $results = array_merge($results, self::dot($value, $prepend . $key . '.'));
+            } else {
+                $results[$prepend . $key] = $value;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Converts array in "dot" notation to a standard multidimensional array.
+     *
+     * @param array $array (Array in "dot" notation)
+     */
+    public static function undot(array $array): array
+    {
+        $return = [];
+        foreach ($array as $key => $value) {
+            self::set($return, $key, $value);
+        }
+
+        return $return;
+    }
+
+    /**
+     * Checks if array key exists and not null using "dot" notation.
+     *
+     * @param array $array (Original array)
+     * @param string $key (Key to check in "dot" notation)
+     *
+     * @throws Exception
+     */
+    public static function has(array $array, string $key): bool
+    {
+        return null !== self::get($array, $key);
+    }
+
+    /**
+     * Returns an array of values for a given key from an array using "dot" notation.
+     *
+     * @param array $array (Original array)
+     * @param string $value (Value to return in "dot" notation)
+     * @param string|null $key (Optionally how to key the returned array in "dot" notation)
+     *
+     * @throws Exception
+     */
+    public static function pluck(array $array, string $value, ?string $key = null): array
+    {
+        $results = [];
+        foreach ($array as $item) {
+            $itemValue = self::get($item, $value);
+            if (is_null($key)) {
+                $results[] = $itemValue;
+            } else {
+                $itemKey = self::get($item, $key);
+                $results[$itemKey] = $itemValue;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Remove a single key, or an array of keys from a given array using "dot" notation.
+     *
+     * @param array $array (Original array)
+     * @param array|string $keys (Key(s) to forget in "dot" notation)
+     */
+    public static function forget(array &$array, array|string $keys): void
+    {
+        $original = &$array;
+        foreach ((array)$keys as $key) {
+            $parts = explode('.', $key);
+            while (count($parts) > 1) {
+                $part = array_shift($parts);
+                if (isset($array[$part]) && is_array($array[$part])) {
+                    $array = &$array[$part];
+                }
+            }
+            unset($array[array_shift($parts)]);
+            // Clean up after each iteration
+            $array = &$original;
+        }
+    }
+
+    /**
+     * Returns the original array except given key(s).
+     *
+     * @param array $array (Original array)
+     * @param array|string $keys (Keys to remove)
+     */
+    public static function except(array $array, array|string $keys): array
+    {
+        return array_diff_key($array, array_flip((array)$keys));
+    }
+
+    /**
+     * Returns only desired key(s) from an array.
+     *
+     * @param array $array (Original array)
+     * @param array|string $keys (Keys to return)
+     */
+    public static function only(array $array, array|string $keys): array
+    {
+        return array_intersect_key($array, array_flip((array)$keys));
+    }
+
+    /**
+     * Returns array of missing keys from the original array, or an empty array if none are missing.
+     *
+     * @param array $array (Original array)
+     * @param array|string $keys (Keys to check)
+     */
+    public static function missing(array $array, array|string $keys): array
+    {
+        return array_values(array_flip(array_diff_key(array_flip((array)$keys), $array)));
+    }
+
+    /**
+     * Checks if keys are missing from the original array.
+     *
+     * @param array $array (Original array)
+     * @param array|string $keys (Keys to check)
+     */
+    public static function isMissing(array $array, array|string $keys): bool
+    {
+        return (bool)self::missing($array, $keys);
+    }
+
+    /**
+     * Sort a multidimensional array by a given key in ascending (optionally, descending) order.
+     *
+     * @param array $array (Original array)
+     * @param string $key (Key name to sort by)
+     * @param bool $descending (Sort descending)
+     */
+    public static function multisort(array $array, string $key, bool $descending = false): array
+    {
+        $columns = array_column($array, $key);
+
+        if (false === $descending) {
+            array_multisort($columns, SORT_ASC, $array, SORT_NUMERIC);
+        } else {
+            array_multisort($columns, SORT_DESC, $array, SORT_NUMERIC);
+        }
+
+        return $array;
+    }
+
+    /**
+     * Rename array keys while preserving their order.
+     *
+     * @param array $array (Original array)
+     * @param array $keys (Key/value pairs to rename)
+     */
+    public static function renameKeys(array $array, array $keys): array
+    {
+        $new_array = [];
+
+        foreach ($array as $k => $v) {
+            if (array_key_exists($k, $keys)) {
+                $new_array[$keys[$k]] = $v;
+            } else {
+                $new_array[$k] = $v;
+            }
+        }
+
+        return $new_array;
+    }
+
+    /**
+     * Order an array based on an array of keys.
+     * Keys from the $order array which do not exist in the original array will be ignored.
+     *
+     * @param array $array (Original array)
+     * @param array $order (Array of keys in the order to be returned)
+     */
+    public static function order(array $array, array $order): array
+    {
+        return self::only(array_replace(array_flip($order), $array), array_keys($array));
+    }
+
+    /**
+     * Convert array into a query string.
+     *
+     * @param array $array (Original array)
+     */
+    public static function query(array $array): string
+    {
+        return http_build_query($array, '', '&', PHP_QUERY_RFC3986);
+    }
+
+    /**
+     * Return an array of values which exist in a given array.
+     *
+     * @param array $array
+     * @param array $values
+     */
+    public static function getAnyValues(array $array, array $values): array
+    {
+        return array_intersect($values, static::dot($array));
+    }
+
+    /**
+     * Do any values exist in a given array.
+     *
+     * @param array $array
+     * @param array $values
+     */
+    public static function hasAnyValues(array $array, array $values): bool
+    {
+        return !empty(self::getAnyValues($array, $values));
+    }
+
+    /**
+     * Do all values exist in a given array.
+     *
+     * @param array $array
+     * @param array $values
+     *
+     * @return bool
+     */
+    public static function hasAllValues(array $array, array $values): bool
+    {
+        return count(array_intersect($values, static::dot($array))) == count($values);
     }
 }

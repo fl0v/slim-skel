@@ -23,6 +23,6 @@ class Config
      */
     public function get(string $key = '', mixed $default = null): mixed
     {
-        return ArrayHelper::getValue($this->config, $key, $default);
+        return ArrayHelper::get($this->config, $key, $default);
     }
 }
