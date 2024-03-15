@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+include_once __DIR__ . '/../config/env.php';
+require_once APP_ROOT . '/vendor/autoload.php';
+
+use DI\ContainerBuilder;
+use Symfony\Component\Console\Application;
+
+// Build DI container instance
+$builder = new ContainerBuilder();
+$builder->addDefinitions(APP_ROOT . '/config/container.php');
+$builder->addDefinitions(APP_ROOT . '/config/commands.php');
+if (!APP_DEBUG) {
+    $builder->enableCompilation(APP_ROOT . '/runtime/cache');
+}
+$container = $builder->build();
+
+try {
+    /** @var Application $application */
+    $application = $container->get(Application::class);
+
+    $application->add($container->get(\App\Command\DemoCommand::class));
+
+    exit($application->run());
+} catch (Throwable $exception) {
+    echo $exception->getMessage();
+    exit(1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+$application = new Application();
+
+// ... register commands
+$application->add(new \App\Command\DemoCommand());
+
+$application->run();
