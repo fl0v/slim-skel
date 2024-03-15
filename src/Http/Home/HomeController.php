@@ -34,7 +34,7 @@ final class HomeController extends AbstractAction implements ControllerInterface
             'response' => $data,
         ]);
 
-        $response->getBody()->write(json_encode($data));
+        $response->getBody()->write((string)json_encode($data));
 
         return $response
             ->withHeader('Content-type', 'application/json');

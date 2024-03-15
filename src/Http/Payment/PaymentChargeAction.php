@@ -17,7 +17,7 @@ final class PaymentChargeAction extends AbstractAction
             'response' => $data,
         ]);
 
-        $response->getBody()->write(json_encode($data));
+        $response->getBody()->write((string)json_encode($data));
 
         return $response
             ->withHeader('Content-type', 'application/json');

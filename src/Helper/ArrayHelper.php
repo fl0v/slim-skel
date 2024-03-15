@@ -142,7 +142,7 @@ class ArrayHelper
         return $result;
     }
 
-    public static function exportKeyPath(array $data, mixed $path, mixed $default = null): ?array
+    public static function exportKeyPath(array $data, mixed $path, mixed $default = null): array
     {
         if (empty($path)) {
             return [];
