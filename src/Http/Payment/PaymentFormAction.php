@@ -10,9 +10,8 @@ final class PaymentFormAction extends AbstractAction
 {
     public function __invoke(Request $request, Response $response): Response
     {
-        return $this->getView()
-            ->render($response, 'payment/form.php', [
-                'data' => 'xxx',
-            ]);
+        return $this->render($response, 'payment/form.php', [
+            'data' => 'xxx',
+        ]);
     }
 }

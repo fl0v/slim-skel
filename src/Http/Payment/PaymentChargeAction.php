@@ -13,6 +13,6 @@ final class PaymentChargeAction extends AbstractAction
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
-        return $this->encodeData($response, $data);
+        return $this->returnData($response, $data);
     }
 }

@@ -18,14 +18,33 @@ abstract class AbstractAction
     ) {
     }
 
-    protected function encodeData(Response $response, array $data, ?string $action = null): Response
+    protected function render(Response $response, string $viewFile, array $data = [], ?string $action = null): Response
+    {
+        $content = $this->getView()->fetch($viewFile, $data, true);
+
+        if (APP_DEBUG) {
+            $caller = $action ?: get_class($this);
+            $this->getLogger()->debug(
+                $caller,
+                [
+                    'view' => $viewFile,
+                    'layout' => $this->getView()->getLayout(),
+                    'size' => strlen($content),
+                ]
+            );
+        }
+
+        $response->getBody()->write($content);
+        return $response;
+    }
+
+    protected function returnData(Response $response, array $data, ?string $action = null): Response
     {
         $json = (string)json_encode($data);
 
         if (APP_DEBUG) {
-            $caller = get_class($this) . ($action ? '::' . $action : '');
-            $this->getLogger()->debug('{caller}', [
-                'caller' => $action,
+            $caller = $action ?: get_class($this);
+            $this->getLogger()->debug($caller, [
                 'response' => $data,
             ]);
         }

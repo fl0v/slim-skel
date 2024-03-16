@@ -26,7 +26,7 @@ final class LoggingMiddleware implements MiddlewareInterface
         $this->logger->debug(strtr(self::REQUEST_LOG, [
             '{method}' => $request->getMethod(),
             '{uri}' => $request->getUri(),
-            '{encoding}' => $request->getHeader('Content-Type'),
+            '{encoding}' => $request->getHeader('Content-Type')[0] ?? '',
         ]));
 
         $response = $handler->handle($request);
@@ -34,7 +34,7 @@ final class LoggingMiddleware implements MiddlewareInterface
         $this->logger->debug(strtr(self::RESPONSE_LOG, [
             '{statusCode}' => $response->getStatusCode(),
             '{reasonPhrase}' => $response->getReasonPhrase(),
-            '{encoding}' => $response->getHeader('Content-Type'),
+            '{encoding}' => $response->getHeader('Content-Type')[0] ?? '',
         ]));
 
         return $response;

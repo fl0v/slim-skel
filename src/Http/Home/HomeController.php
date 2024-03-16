@@ -18,10 +18,9 @@ final class HomeController extends AbstractAction implements ControllerInterface
 
     public function index(Request $request, Response $response): Response
     {
-        return $this->getView()
-            ->render($response, 'home/index.php', [
-                'data' => 'asd',
-            ]);
+        return $this->render($response, 'home/index.php', [
+            'data' => 'asd',
+        ], __METHOD__);
     }
 
     public function ping(Request $request, Response $response): Response
@@ -29,6 +28,6 @@ final class HomeController extends AbstractAction implements ControllerInterface
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
-        return $this->encodeData($response, $data, __METHOD__);
+        return $this->returnData($response, $data, __METHOD__);
     }
 }
