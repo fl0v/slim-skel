@@ -7,6 +7,7 @@ return [
         'lang' => 'en',
         'charset' => 'UTF-8',
         'host' => APP_HOST,
+        'version' => APP_VERSION,
     ],
     'error' => [
         'displayErrorDetails' => APP_DEBUG,
@@ -20,5 +21,20 @@ return [
         'path' => APP_ROOT . '/templates',
         'layout' => 'main.php', // default layout
         'debug' => APP_DEBUG,
+    ],
+    'cache' => [
+        'prefix' => 'demo',
+        'version' => APP_VERSION, // to invalidate cache on releases,
+        'default' => 'memcache',
+        'pools' => [
+            'memcache' => function () {
+            },
+            'apc' => function () {
+            },
+            'page' => function () {
+            },
+            'query' => function () {
+            },
+        ],
     ],
 ];
