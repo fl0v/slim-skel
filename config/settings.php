@@ -1,14 +1,5 @@
 <?php
 
-// phpcs:disable
-
-include_once 'env.php';
-
-\defined('APP_ENV') or \define('APP_ENV', 'production');
-\defined('APP_DEBUG') or \define('APP_DEBUG', false);
-\defined('APP_ROOT') or \define('APP_ROOT', dirname(__DIR__));
-\defined('APP_HOST') or \define('APP_HOST', 'slim.local');
-
 return [
     'app' => [
         'name' => 'Slim demo',
@@ -27,6 +18,7 @@ return [
     ],
     'view' => [
         'path' => APP_ROOT . '/templates',
+        'layout' => 'main.php', // default layout
         'debug' => APP_DEBUG,
     ],
 ];

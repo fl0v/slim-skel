@@ -19,7 +19,6 @@ final class HomeController extends AbstractAction implements ControllerInterface
     public function index(Request $request, Response $response): Response
     {
         return $this->getView()
-            ->withLayout('main.php')
             ->render($response, 'home/index.php', [
                 'data' => 'asd',
             ]);
@@ -30,13 +29,6 @@ final class HomeController extends AbstractAction implements ControllerInterface
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
-        $this->getLogger()->debug('ping', [
-            'response' => $data,
-        ]);
-
-        $response->getBody()->write((string)json_encode($data));
-
-        return $response
-            ->withHeader('Content-type', 'application/json');
+        return $this->encodeData($response, $data, __METHOD__);
     }
 }

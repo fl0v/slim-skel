@@ -11,7 +11,6 @@ use Symfony\Component\Console\Application;
 // Build DI container instance
 $builder = new ContainerBuilder();
 $builder->addDefinitions(APP_ROOT . '/config/container.php');
-$builder->addDefinitions(APP_ROOT . '/config/commands.php');
 if (!APP_DEBUG) {
     $builder->enableCompilation(APP_ROOT . '/runtime/cache');
 }
@@ -20,10 +19,6 @@ $container = $builder->build();
 try {
     /** @var Application $application */
     $application = $container->get(Application::class);
-
-    $application->add($container->get(\App\Command\DemoCommand::class));
-    $application->add($container->get(ApiDemoCommand::class));
-
     exit($application->run());
 } catch (Throwable $exception) {
     echo $exception->getMessage();

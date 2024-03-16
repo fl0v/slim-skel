@@ -13,13 +13,6 @@ final class PaymentChargeAction extends AbstractAction
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
-        $this->getLogger()->debug(__CLASS__, [
-            'response' => $data,
-        ]);
-
-        $response->getBody()->write((string)json_encode($data));
-
-        return $response
-            ->withHeader('Content-type', 'application/json');
+        return $this->encodeData($response, $data);
     }
 }

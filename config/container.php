@@ -9,10 +9,11 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Symfony\Component\Console\Application as Console;
 
 return [
     Config::class => function () {
-        return new Config(include APP_ROOT . '/config/settings.php');
+        return new Config(include __DIR__ . '/settings.php');
     },
 
     App::class => function (Container $container) {
@@ -23,6 +24,12 @@ return [
 
         return $app;
     },
+
+     Console::class => function (Container $container) {
+         $app = new Symfony\Component\Console\Application();
+         (require __DIR__ . '/commands.php')($app, $container);
+         return $app;
+     },
 
     // HTTP factories
     ResponseFactoryInterface::class => function (Container $container) {
@@ -59,6 +66,8 @@ return [
     View::class => function (Config $config) {
         $settings = $config->get('view');
         $view = new View($settings['path']);
+        $view->setAttributes($settings['attributes'] ?? []);
+        $view->setLayout($settings['layout'] ?? '');
         $view->setDebug($settings['debug'] ?? false);
         $view->setConfig($config);
 

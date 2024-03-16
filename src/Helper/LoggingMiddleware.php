@@ -10,8 +10,8 @@ use Psr\Log\LoggerInterface;
 
 final class LoggingMiddleware implements MiddlewareInterface
 {
-    private const REQUEST_LOG = '{method} {uri}';
-    private const RESPONSE_LOG = '{statusCode} {reasonPhrase}';
+    private const REQUEST_LOG = '{method} {uri} {encoding}';
+    private const RESPONSE_LOG = '{statusCode} {reasonPhrase} {encoding}';
 
     public function __construct(
         private LoggerInterface $logger
@@ -22,16 +22,19 @@ final class LoggingMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
-        $this->logger->info(strtr(self::REQUEST_LOG, [
+
+        $this->logger->debug(strtr(self::REQUEST_LOG, [
             '{method}' => $request->getMethod(),
             '{uri}' => $request->getUri(),
+            '{encoding}' => $request->getHeader('Content-Type'),
         ]));
 
         $response = $handler->handle($request);
 
-        $this->logger->info(strtr(self::RESPONSE_LOG, [
+        $this->logger->debug(strtr(self::RESPONSE_LOG, [
             '{statusCode}' => $response->getStatusCode(),
             '{reasonPhrase}' => $response->getReasonPhrase(),
+            '{encoding}' => $response->getHeader('Content-Type'),
         ]));
 
         return $response;

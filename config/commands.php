@@ -1,12 +1,12 @@
 <?php
 
-use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Application as Console;
+use Psr\Container\ContainerInterface as Container;
 
-return [
-    Symfony\Component\Console\Application::class => function () {
-        // $env = (new ArgvInput())->getParameterOption(['--env', '-e'], 'dev');
-        $_ENV['APP_ENV'] = APP_ENV;
-
-        return new Symfony\Component\Console\Application();
-    },
-];
+/**
+ * Setup available console commands
+ */
+return function (Console $console, Container $container) {
+    $console->add($container->get(\App\Command\DemoCommand::class));
+    $console->add($container->get(\App\Command\ApiDemoCommand::class));
+};
