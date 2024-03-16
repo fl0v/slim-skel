@@ -15,19 +15,36 @@ services:
             - 11211:11211
         networks:
             - app-tier
+        restart: always
 
     mongodb:
         image: mongo:latest
         environment:
             - MONGO_INITDB_ROOT_USERNAME=docker
             - MONGO_INITDB_ROOT_PASSWORD=mongopw
-        ports:
-            - 27017:27017
         volumes:
             - ./runtime/mongo/data/:/data/db/
             - ./runtime/logs:/var/logs
+        ports:
+            - 27017:27017
         networks:
             - app-tier
+        restart: always
+
+    mysql:
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: 'password'
+            MYSQL_USER: 'docker'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_DATABASE: 'slimdemo'
+        volumes:
+            - ./runtime/mysql:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - app-tier
+        restart: always
 
     app:
         build: docker
@@ -35,10 +52,11 @@ services:
         command: php -S 0.0.0.0:8080 -t public
         environment:
             docker: "true"
-        ports:
-            - 8080:8080
         volumes:
             - .:/var/www
             - ./runtime/logs:/var/logs
+        ports:
+            - 8080:8080
         networks:
             - app-tier
+        restart: always
