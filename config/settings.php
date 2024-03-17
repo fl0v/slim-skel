@@ -23,18 +23,7 @@ return [
         'debug' => APP_DEBUG,
     ],
     'cache' => [
-        'prefix' => 'demo',
-        'version' => APP_VERSION, // to invalidate cache on releases,
-        'default' => 'memcache',
-        'pools' => [
-            'memcache' => function () {
-            },
-            'apc' => function () {
-            },
-            'page' => function () {
-            },
-            'query' => function () {
-            },
-        ],
+        'prefix' => 'demo', // add APP_VERSION to invalidate cache on release
+        'ttl' => 3600,
     ],
 ];

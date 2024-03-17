@@ -4,17 +4,15 @@ namespace App\Http;
 
 use App\Helper\Config;
 use App\Helper\View;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
+use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface as Logger;
+use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
 
 abstract class AbstractAction
 {
     public function __construct(
-        protected LoggerInterface $logger,
-        protected ContainerInterface $container,
-        protected Config $config,
-        protected View $view,
+        protected Container $container,
     ) {
     }
 
@@ -35,9 +33,13 @@ abstract class AbstractAction
         }
 
         $response->getBody()->write($content);
+
         return $response;
     }
 
+    /**
+     * @TODO add content negotiation xml/json + pretty json on devel
+     */
     protected function returnData(Response $response, array $data, ?string $action = null): Response
     {
         $json = (string)json_encode($data);
@@ -48,29 +50,35 @@ abstract class AbstractAction
                 'response' => $data,
             ]);
         }
-        
+
         $response->getBody()->write($json);
+
         return $response
             ->withHeader('Content-type', 'application/json');
     }
 
-    protected function getLogger(): LoggerInterface
-    {
-        return $this->logger;
-    }
-
-    protected function getContainer(): ContainerInterface
+    protected function getContainer(): Container
     {
         return $this->container;
     }
 
+    protected function getLogger(): Logger
+    {
+        return $this->getContainer()->get(Logger::class);
+    }
+
     protected function getConfig(): Config
     {
-        return $this->config;
+        return $this->getContainer()->get(Config::class);
     }
 
     protected function getView(): View
     {
-        return $this->view;
+        return $this->getContainer()->get(View::class);
+    }
+
+    protected function getSession(): Session
+    {
+        return $this->getContainer()->get(Session::class);
     }
 }

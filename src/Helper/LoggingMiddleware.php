@@ -22,7 +22,6 @@ final class LoggingMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
-
         $this->logger->debug(strtr(self::REQUEST_LOG, [
             '{method}' => $request->getMethod(),
             '{uri}' => $request->getUri(),

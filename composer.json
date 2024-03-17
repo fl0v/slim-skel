@@ -2,17 +2,17 @@
   "require": {
     "php": "^8.2",
     "ext-json": "*",
+    "ext-memcached": "*",
     "fig/http-message-util": "^1.1",
     "guzzlehttp/guzzle": "^7.8",
     "monolog/monolog": "^3",
-    "nyholm/psr7": "^1",
-    "nyholm/psr7-server": "^1",
     "php-di/php-di": "^7",
     "slim/php-view": "^3.2",
     "slim/psr7": "^1.6",
     "slim/slim": "^4",
     "symfony/cache": "^7.0",
-    "symfony/console": "^7.0"
+    "symfony/console": "^7.0",
+    "symfony/http-foundation": "^7.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3",

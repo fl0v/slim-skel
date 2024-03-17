@@ -4,7 +4,6 @@
 include_once __DIR__ . '/../config/env.php';
 require_once APP_ROOT . '/vendor/autoload.php';
 
-use App\Command\ApiDemoCommand;
 use DI\ContainerBuilder;
 use Symfony\Component\Console\Application;
 
@@ -24,22 +23,3 @@ try {
     echo $exception->getMessage();
     exit(1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-$application = new Application();
-
-// ... register commands
-$application->add(new \App\Command\DemoCommand());
-
-$application->run();

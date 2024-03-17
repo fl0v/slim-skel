@@ -18,8 +18,11 @@ final class HomeController extends AbstractAction implements ControllerInterface
 
     public function index(Request $request, Response $response): Response
     {
+        $viewsCount = $this->getSession()->get('views', 0);
+        $viewsCount++;
+        $this->getSession()->set('views', $viewsCount);
         return $this->render($response, 'home/index.php', [
-            'data' => 'asd',
+            'views' => $viewsCount,
         ], __METHOD__);
     }
 
@@ -28,6 +31,7 @@ final class HomeController extends AbstractAction implements ControllerInterface
         $data = [
             'app' => $this->getConfig()->get('app'),
         ];
+
         return $this->returnData($response, $data, __METHOD__);
     }
 }
