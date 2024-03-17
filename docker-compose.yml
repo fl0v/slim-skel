@@ -15,7 +15,15 @@ services:
             - 11211:11211
         networks:
             - app-tier
-        restart: always
+
+    memcacheadmin:
+        image: hatamiarash7/memcached-admin:master
+        environment:
+            - MEMCACHED_HOST=memcached:11211
+        ports:
+            - 8081:80
+        networks:
+            - app-tier
 
     mongodb:
         image: mongo:latest

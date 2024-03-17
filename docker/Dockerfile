@@ -53,7 +53,12 @@ RUN pecl clear-cache && apk del --purge --no-cache ${PHPIZE_DEPS}
 # COMPOSER
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
 
+COPY php.ini /usr/local/etc/php/php.ini
+
 WORKDIR /var/www
+#USER www
+
+HEALTHCHECK CMD curl --fail http://localhost:8080/ping || exit 1
 
 #CMD ["php-fpm"]
 

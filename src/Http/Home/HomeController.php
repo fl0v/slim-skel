@@ -14,6 +14,7 @@ final class HomeController extends AbstractAction implements ControllerInterface
     {
         $app->get('/', [self::class, 'index']);
         $app->any('/ping', [self::class, 'ping']);
+        $app->any('/debug', [self::class, 'debug']);
     }
 
     public function index(Request $request, Response $response): Response
@@ -33,5 +34,10 @@ final class HomeController extends AbstractAction implements ControllerInterface
         ];
 
         return $this->returnData($response, $data, __METHOD__);
+    }
+
+    public function debug(Request $request, Response $response): Response
+    {
+        return $this->render($response, 'home/debug.php', [], __METHOD__);
     }
 }

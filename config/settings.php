@@ -25,5 +25,6 @@ return [
     'cache' => [
         'prefix' => 'demo', // add APP_VERSION to invalidate cache on release
         'ttl' => 3600,
+        'hosts' => explode(',', MEMCACHE_HOSTS),
     ],
 ];
