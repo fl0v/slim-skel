@@ -1,10 +1,18 @@
 <?php
 
 use Slim\App;
+use App\Helper\Config;
 
-return function (App $app) {
+return function (App $app, Config $config) {
     $app->addBodyParsingMiddleware(); // Parse json, form data and xml
     $app->addRoutingMiddleware(); // Add the Slim built-in routing middleware
-    $app->addErrorMiddleware(true, true, true); // Handle exceptions
+
+    $errorSettings = $config->get('error');
+    $app->addErrorMiddleware(
+        $errorSettings['displayErrorDetails'] ?? false,
+        $errorSettings['logErrors'] ?? true,
+        $errorSettings['logErrorDetails'] ?? true,
+    ); // Handle exceptions
+
     $app->add(\App\Helper\LoggingMiddleware::class);
 };

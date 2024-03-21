@@ -24,11 +24,11 @@ return [
         return $app;
     },
 
-    App::class => function (Container $container) {
+    App::class => function (Container $container, Config $config) {
         $app = AppFactory::createFromContainer($container);
 
-        (require __DIR__ . '/routes.php')($app);
-        (require __DIR__ . '/middleware.php')($app);
+        (require __DIR__ . '/routes.php')($app, $config);
+        (require __DIR__ . '/middleware.php')($app, $config);
 
         return $app;
     },
