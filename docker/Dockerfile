@@ -56,17 +56,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www
-#USER www
 
 HEALTHCHECK CMD curl --fail http://localhost:8080/ping || exit 1
 
-#CMD ["php-fpm"]
-
-#CMD ["/usr/sbin/php-fpm82", "-R", "--nodaemonize"]
-
-#CMD [ "php", "-S", "0.0.0.0:8887", "public/index.php" ]
-
-
-
-
+CMD ["php-fpm"]
 

@@ -11,6 +11,9 @@ sudo usermod -a -G ${APP_GROUP} ${APP_OWNER}
 # Set files owner/group
 sudo chown -R ${APP_OWNER}:${APP_GROUP} ${APP_ROOT}
 
+# comented the folowing 2 because could figure out
+# how to run the find only on files not marked to execute already
+
 # Set correct permissions for directories 
 #sudo find ${APP_ROOT} -type f -exec chmod 644 {} \;
 
