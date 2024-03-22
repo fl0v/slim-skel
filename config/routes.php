@@ -1,18 +1,17 @@
 <?php
 
-use Slim\App;
 use App\Helper\Config;
-use Slim\Interfaces\RouteCollectorProxyInterface as Group;
-use App\Http\Payment\PaymentFormAction;
-use App\Http\Payment\PaymentChargeAction;
 use App\Http\Home\HomeController;
+use App\Http\Payment\PaymentChargeAction;
+use App\Http\Payment\PaymentFormAction;
+use Slim\App;
+use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return static function (App $app, Config $config) {
-
     $app->get('/', [HomeController::class, 'index']);
     $app->any('/ping', [HomeController::class, 'ping']);
     $app->any('/debug', [HomeController::class, 'debug']);
-    
+
     $app->group('/payment', function (Group $group) {
         $group->any('/form', PaymentFormAction::class);
         $group->post('/charge', PaymentChargeAction::class);

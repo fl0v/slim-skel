@@ -1,7 +1,7 @@
 <?php
 
-use Slim\App;
 use App\Helper\Config;
+use Slim\App;
 
 return function (App $app, Config $config) {
     $app->addBodyParsingMiddleware(); // Parse json, form data and xml

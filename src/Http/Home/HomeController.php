@@ -5,7 +5,6 @@ namespace App\Http\Home;
 use App\Http\AbstractAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\App;
 
 final class HomeController extends AbstractAction
 {
@@ -14,6 +13,7 @@ final class HomeController extends AbstractAction
         $viewsCount = $this->getSession()->get('views', 0);
         $viewsCount++;
         $this->getSession()->set('views', $viewsCount);
+
         return $this->render($response, 'home/index.php', [
             'views' => $viewsCount,
         ], __METHOD__);
