@@ -9,7 +9,7 @@ up: ## start docker container and run app
 down: ## stop docker container
 	@docker-compose down
 
-enter: ## container shell
+enter: ## connect to container shell
 	@docker-compose exec app sh
 
 test: ## run unit tests
@@ -31,4 +31,4 @@ fix: ## apply php-cs-fixer and phpcbf fixes
 phpstan: ## run phpstan
 	@docker-compose exec app vendor/bin/phpstan analyse -c phpstan.neon --no-progress --ansi
 
-test-all: check phpstan test ## run php-cs-fixee, php-cs, phpstan Aand unit tests
+test-all: check phpstan test ## run php-cs-fixer, php-cs, phpstan Aand unit tests
