@@ -23,15 +23,12 @@ trait AppTestTrait
 
     protected function setUpApp(): void
     {
-
         include_once __DIR__ . '/../../config/env.php';
 
-        $container = (new ContainerBuilder())
-            ->addDefinitions(APP_ROOT . '/config/container.php')
-            ->build();
+        // Get container instance
+        $container  = require APP_ROOT . '/config/bootstrap.php';
 
         $this->app = $container->get(App::class);
-
         $this->setUpContainer($container);
 
         /** @phpstan-ignore-next-line */

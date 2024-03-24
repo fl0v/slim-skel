@@ -1,4 +1,7 @@
 <?php
+/**
+ * Container definitions
+ */
 
 use App\Helper\Config;
 use App\Helper\View;
@@ -36,6 +39,10 @@ return [
         return $app;
     },
 
+    /*
+     * Http
+     */
+
     ServerRequestFactoryInterface::class => function (Container $container) {
         return $container->get(Slim\Psr7\Factory\ServerRequestFactory::class);
     },
@@ -56,9 +63,9 @@ return [
         return $container->get(Slim\Psr7\Factory\UriFactory::class);
     },
 
-    // Slim\Psr7\Interfaces\HeadersInterface::class => function (Container $container) {
-    //     return $container->get(Slim\Psr7\Headers::class);
-    // },
+    /*
+     * Other
+     */
 
     Session::class => function (Container $container) {
         $session = $container->get(Symfony\Component\HttpFoundation\Session\Session::class);
