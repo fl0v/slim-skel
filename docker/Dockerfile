@@ -26,11 +26,6 @@ RUN apk add gmp-dev icu-dev \
 
 RUN docker-php-ext-install opcache bcmath
 
-# IMAGEMAGICK - nu merge :( PHP Startup: Unable to load dynamic library 'imagick'
-# RUN apk add build-base imagemagick-dev imagemagick \
-#     && pecl install imagick \
-#     && docker-php-ext-enable imagick
-
 # GD
 RUN apk add \
     freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev \
@@ -42,13 +37,11 @@ RUN apk add \
     && docker-php-ext-install -j$(nproc) gd \
     && apk del freetype-dev libpng-dev libjpeg-turbo-dev 
 
+# TODO: add imagemagick
 
 
 # CLEAN
 RUN pecl clear-cache && apk del --purge --no-cache ${PHPIZE_DEPS}
-
-# REQ by imagik
-# RUN apk add libgomp
 
 # COMPOSER
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
@@ -60,4 +53,3 @@ WORKDIR /var/www
 HEALTHCHECK CMD curl --fail http://localhost:8080/ping || exit 1
 
 CMD ["php-fpm"]
-

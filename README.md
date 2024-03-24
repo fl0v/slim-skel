@@ -21,6 +21,7 @@ Run `make` to see other commands (see Makefile).
 - json parser middleware
 - Abstraction for MySql and MongoDb
 - Cache implementation
+- proper `make install` to copy env file and run migrations
 
 ## Features
 
