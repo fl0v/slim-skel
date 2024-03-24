@@ -3,8 +3,11 @@
 use App\Helper\Config;
 use App\Helper\View;
 use Psr\Container\ContainerInterface as Container;
-use Psr\Http\Message\ResponseFactoryInterface as Response;
-use Psr\Http\Message\ServerRequestFactoryInterface as Request;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UploadedFileFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface as Logger;
 use Slim\App;
 use Slim\Factory\AppFactory;
@@ -33,13 +36,29 @@ return [
         return $app;
     },
 
-    Request::class => function (Container $container) {
-        return $container->get(Slim\Psr7\Request::class);
+    ServerRequestFactoryInterface::class => function (Container $container) {
+        return $container->get(Slim\Psr7\Factory\ServerRequestFactory::class);
     },
 
-    Response::class => function (Container $container) {
-        return $container->get(Slim\Psr7\Response::class);
+    ResponseFactoryInterface::class => function (Container $container) {
+        return $container->get(Slim\Psr7\Factory\ResponseFactory::class);
     },
+
+    StreamFactoryInterface::class => function (Container $container) {
+        return $container->get(Slim\Psr7\Factory\StreamFactory::class);
+    },
+
+    UploadedFileFactoryInterface::class => function (Container $container) {
+        return $container->get(Slim\Psr7\Factory\UploadedFileFactory::class);
+    },
+
+    UriFactoryInterface::class => function (Container $container) {
+        return $container->get(Slim\Psr7\Factory\UriFactory::class);
+    },
+
+    // Slim\Psr7\Interfaces\HeadersInterface::class => function (Container $container) {
+    //     return $container->get(Slim\Psr7\Headers::class);
+    // },
 
     Session::class => function (Container $container) {
         $session = $container->get(Symfony\Component\HttpFoundation\Session\Session::class);
