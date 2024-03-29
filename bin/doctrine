@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+include_once __DIR__ . '/../config/env.php';
+$container  = require APP_ROOT . '/config/bootstrap.php';
+
+ConsoleRunner::run(new SingleManagerProvider($container->get(EntityManager::class)));

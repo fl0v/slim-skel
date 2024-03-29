@@ -16,6 +16,10 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 return [
     Config::class => function () {
@@ -61,6 +65,42 @@ return [
 
     UriFactoryInterface::class => function (Container $container) {
         return $container->get(Slim\Psr7\Factory\UriFactory::class);
+    },
+
+    /*
+     * DB
+     */
+
+    EntityManager::class => function (Container $container, Config $config) {
+        $settings = $config->get('doctrine');
+        $debug = $settings['debug'] ?? false;
+        $entitiesDir = $settings['entities_dir'];
+
+        $cache = $debug
+            ? new ArrayAdapter()
+            : $container->get('cache:filesystem');
+
+        $ormSetup = ORMSetup::createAttributeMetadataConfiguration($entitiesDir, $debug, null, $cache);
+
+        return new EntityManager($settings['connection'], $ormSetup);
+    },
+
+    /*
+     * Cache
+     */
+
+//    CacheItemPoolInterface::class => function (Cotnainer $container, Config $config) {
+//        //$cache = $container->get(MemcachedAdapter::class);
+//        $cache = new MemcachedAdapter();
+//
+//    },
+
+    'cache:filesystem' => function (Config $config) {
+        $settings = $config->get('cache');
+        $ns = $settings['namespace'] ?? $config->get('app.id');
+        $ttl = $settings['ttl'] ?? 3600;
+        $path = $settings['path'] ?? null;
+        return new FilesystemAdapter($ns, $ttl, $path);
     },
 
     /*
