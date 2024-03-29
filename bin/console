@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-include_once __DIR__ . '/../config/env.php';
+declare(strict_types=1);
 
 use Symfony\Component\Console\Application;
 
-// Get container instance
+include_once __DIR__ . '/../config/env.php';
 $container  = require APP_ROOT . '/config/bootstrap.php';
 
 try {

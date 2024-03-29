@@ -9,6 +9,9 @@ up: ## start docker container and run app
 down: ## stop docker container
 	@docker-compose down
 
+logs: ## tail container logs
+	@docker-compose logs -f -t	
+
 enter: ## connect to container shell
 	@docker-compose exec app sh
 
