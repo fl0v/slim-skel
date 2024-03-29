@@ -22,4 +22,7 @@ return static function (App $app, Config $config) {
         //     $group->post('/finalise.html', AuthFinalise::class);
         // });
     });
+    if (!APP_DEBUG && APP_ENV !== 'test') {
+        $app->getRouteCollector()->setCacheFile(APP_ROOT . '/runtime/cache');
+    }
 };

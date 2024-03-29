@@ -19,9 +19,12 @@ Run `make` to see other commands (see Makefile).
 
 ## TODO
 - json parser middleware
-- Abstraction for MySql and MongoDb
+- Abstraction for MySql
+- Abstraction for mongodb
 - Cache implementation
 - proper `make install` to copy env file and run migrations
+- add tracy https://github.com/semhoun/runtracy
+- data grid abstraction, 
 
 ## Features
 
