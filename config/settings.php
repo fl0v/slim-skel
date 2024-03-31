@@ -50,7 +50,7 @@ return [
             'dbname' => 'slimdemo',
             'user' => 'docker',
             'password' => 'password',
-            'charset' => 'utf-8'
+            'charset' => 'utf8mb4'
         ],
     ],
 ];
