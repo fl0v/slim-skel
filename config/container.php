@@ -16,8 +16,9 @@ use Slim\App;
 use Slim\Factory\AppFactory;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMSetup;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -71,18 +72,23 @@ return [
      * DB
      */
 
-    EntityManager::class => function (Container $container, Config $config) {
+    Configuration::class => function (Container $container, Config $config) {
         $settings = $config->get('doctrine');
         $debug = $settings['debug'] ?? false;
         $entitiesDir = $settings['entities_dir'];
-
         $cache = $debug
             ? new ArrayAdapter()
             : $container->get('cache:filesystem');
 
-        $ormSetup = ORMSetup::createAttributeMetadataConfiguration($entitiesDir, $debug, null, $cache);
+        return Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($entitiesDir, $debug, null, $cache);
+    },
 
-        return new EntityManager($settings['connection'], $ormSetup);
+    Connection::class => function (Container $container, Config $config) {
+        $settings = $config->get('doctrine');
+        return Doctrine\DBAL\DriverManager::getConnection(
+            $settings['connection'] ?? [],
+            $container->get(Configuration::class),
+        );
     },
 
     /*
