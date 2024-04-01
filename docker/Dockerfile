@@ -22,7 +22,7 @@ RUN apk add libzip-dev \
     && docker-php-ext-install zip
 
 # DB
-RUN docker-php-ext-install -j "$(nproc)" \ 
+RUN docker-php-ext-install \ 
     pdo \
     pdo_mysql \
     mysqli
@@ -31,13 +31,11 @@ RUN docker-php-ext-install -j "$(nproc)" \
 RUN apk add libmemcached libmemcached-dev zlib zlib-dev \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && apk del libmemcached-dev zlib-dev \
-    && pecl clear-cache
+    && apk del libmemcached-dev zlib-dev
 
 # APCU
 RUN pecl install apcu \
-    && docker-php-ext-enable apcu \
-    && pecl clear-cache
+    && docker-php-ext-enable apcu
 
 # GMP & INTL
 RUN apk add gmp-dev icu-dev \
@@ -53,17 +51,16 @@ RUN apk add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-
 
 
 # IMAGEMAGICK
-RUN apk add imagemagick-dev \
+RUN apk add php82-pecl-imagick --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
+    && apk add --update imagemagick imagemagick-dev \
     && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && pecl clear-cache
+    && docker-php-ext-enable imagick
 
 # XDEBUG
 RUN apk add --no-cache --update linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && apk del linux-headers \
-    && pecl clear-cache
+    && apk del linux-headers
 
 # CLEAN (not sure it works because is executed on a different layer)
 RUN pecl clear-cache && apk del --purge --no-cache .build-dependencies
@@ -73,7 +70,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY php.ini /usr/local/etc/php/conf.d/app-php.ini
 
 WORKDIR /var/www
-USER www-data
+#USER www-data
 
 HEALTHCHECK CMD curl --fail http://localhost:8080/ping || exit 1
 

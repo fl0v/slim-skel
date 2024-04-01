@@ -75,12 +75,12 @@ return [
     Configuration::class => function (Container $container, Config $config) {
         $settings = $config->get('doctrine');
         $debug = $settings['debug'] ?? false;
-        $entitiesDir = $settings['entities_dir'];
+        $metadataPaths = $settings['metadata_paths'];
         $cache = $debug
             ? new ArrayAdapter()
             : $container->get('cache:filesystem');
-
-        return Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($entitiesDir, $debug, null, $cache);
+            
+        return Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($metadataPaths, $debug, null, $cache);
     },
 
     Connection::class => function (Container $container, Config $config) {
