@@ -18,7 +18,7 @@ return [
         'path' => APP_ROOT . '/runtime/logs/app.log',
     ],
     'view' => [
-        'path' => APP_ROOT . '/templates',
+        'path' => APP_ROOT . '/resources/templates',
         'layout' => 'main.php', // default layout
         'debug' => APP_DEBUG,
     ],
