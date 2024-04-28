@@ -1,10 +1,13 @@
 <?php
+
 /**
- * Container definitions
+ * Container definitions.
  */
 
 use App\Helper\Config;
 use App\Helper\View;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Configuration;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -14,12 +17,10 @@ use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface as Logger;
 use Slim\App;
 use Slim\Factory\AppFactory;
-use Symfony\Component\Console\Application as Console;
-use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\Configuration;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Console\Application as Console;
+use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
 
 return [
     Config::class => function () {
@@ -78,12 +79,13 @@ return [
         $cache = $debug
             ? new ArrayAdapter()
             : $container->get('cache:filesystem');
-            
+
         return Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration($metadataPaths, $debug, null, $cache);
     },
 
     Connection::class => function (Container $container, Config $config) {
         $settings = $config->get('doctrine');
+
         return Doctrine\DBAL\DriverManager::getConnection(
             $settings['connection'] ?? [],
             $container->get(Configuration::class),
@@ -94,17 +96,18 @@ return [
      * Cache
      */
 
-//    CacheItemPoolInterface::class => function (Container $container, Config $config) {
-//        //$cache = $container->get(MemcachedAdapter::class);
-//        $cache = new MemcachedAdapter();
-//
-//    },
+    //    CacheItemPoolInterface::class => function (Container $container, Config $config) {
+    //        //$cache = $container->get(MemcachedAdapter::class);
+    //        $cache = new MemcachedAdapter();
+    //
+    //    },
 
     'cache:filesystem' => function (Config $config) {
         $settings = $config->get('cache');
         $ns = $settings['namespace'] ?? $config->get('app.id');
         $ttl = $settings['ttl'] ?? 3600;
         $path = $settings['path'] ?? null;
+
         return new FilesystemAdapter($ns, $ttl, $path);
     },
 

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Create container instance
+ * Create container instance.
  */
 
 require_once APP_ROOT . '/vendor/autoload.php';
@@ -12,5 +13,5 @@ $builder->addDefinitions(APP_ROOT . '/config/container.php');
 if (!APP_DEBUG && APP_ENV !== 'test') {
     $builder->enableCompilation(APP_ROOT . '/runtime/cache');
 }
-return $builder->build();
 
+return $builder->build();

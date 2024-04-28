@@ -40,7 +40,7 @@ return [
             'dbname' => 'slimdemo',
             'user' => 'docker',
             'password' => 'password',
-            'charset' => 'utf8mb4'
+            'charset' => 'utf8mb4',
         ],
     ],
     'migrations' => [

@@ -9,7 +9,8 @@ final readonly class CategoryService
 {
     public function __construct(
         private EntityManager $entityManager,
-    ) {}
+    ) {
+    }
 
     public function newCategory(string $name): Category
     {

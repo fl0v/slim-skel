@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Setup available console commands.
  */
