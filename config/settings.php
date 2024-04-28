@@ -1,16 +1,19 @@
 <?php
 
+$appId = $_ENV['APP_ID'] ?? 'app';
+$appVersion = @include 'version.php';
+
 return [
     'app' => [
         'name' => 'Slim demo',
-        'id' => APP_ID,
+        'id' => $appId,
         'lang' => 'en',
         'charset' => 'UTF-8',
-        'host' => APP_HOST,
-        'version' => APP_VERSION,
+        'host' => $_ENV['APP_HOST'] ?? 'localhost',
+        'version' => $appVersion,
     ],
     'error' => [
-        'displayErrorDetails' => APP_DEBUG,
+        'displayErrorDetails' => $_ENV['APP_DEBUG'] ?? false,
         'logError' => true,
         'logErrorDetails' => true,
     ],
@@ -23,10 +26,10 @@ return [
         'debug' => APP_DEBUG,
     ],
     'cache' => [
-        'namespace' => APP_ID . '.' . APP_VERSION,
+        'namespace' => $appId . '.' . $appVersion,
         'ttl' => 3600, // default
         // memcache
-        'hosts' => explode(',', MEMCACHE_HOSTS),
+        'hosts' => explode(',', $_ENV['MEMCACHE_HOSTS'] ?? ''),
         // filesystem
         'path' => APP_ROOT . '/runtime/cache',
     ],
@@ -34,12 +37,12 @@ return [
         'debug' => APP_DEBUG, // in debug mode will not cache metadata
         'metadata_paths' => [APP_ROOT . '/src/Db'], // will search for yml, xml, annotations, comments, attributes
         'connection' => [
-            'driver' => 'pdo_mysql',
-            'host' => 'mysql',
-            'port' => 3306,
-            'dbname' => 'slimdemo',
-            'user' => 'docker',
-            'password' => 'password',
+            'driver' => $_ENV['MYSQL_DRIVER'] ?? 'pdo_mysql',
+            'host' => $_ENV['MYSQL_HOST'] ?? 'localhost',
+            'port' => $_ENV['MYSQL_PORT'] ?? 3306,
+            'dbname' => $_ENV['MYSQL_DBNAME'] ?? '',
+            'user' => $_ENV['MYSQL_USER'] ?? '',
+            'password' => $_ENV['MYSQL_PASSWORD'] ?? '',
             'charset' => 'utf8mb4',
         ],
     ],

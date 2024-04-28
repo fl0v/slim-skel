@@ -22,17 +22,15 @@ trait AppTestTrait
 
     protected function setUpApp(): void
     {
-        include_once __DIR__ . '/../../config/env.php';
-
-        // Get container instance
-        $container = require APP_ROOT . '/config/bootstrap.php';
+        $container = require __DIR__ . '/../../config/bootstrap.php';
 
         $this->app = $container->get(App::class);
         $this->setUpContainer($container);
 
         /** @phpstan-ignore-next-line */
         if (method_exists($this, 'setUpDatabase')) {
-            $this->setUpDatabase(__DIR__ . '/../../resources/schema/schema.sql');
+            // $this->setUpDatabase(__DIR__ . '/../../resources/schema/schema.sql');
+            // @TODO run migrations
         }
     }
 }
