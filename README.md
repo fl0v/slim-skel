@@ -19,10 +19,15 @@ Inside docker container will start PHP 8.2 (FPM), mongodb, mysql, memcached.
 
 ## DB
 
-- Integration uses doctrine with migrations support.
-- Use `./bin/doctrine` to run dedicated console application, but it must be run within docker container because connection settings are using docker network host and also will make sure all env requirements are met (use `make enter` to connect to docker container).
-- After altering entities run `./bin/doctrine migrations:diff` to generate migration, new migrations will be located in `/resources/db/migrations`.
-- Run `./bin/doctrine migrations:migrate --dry-run` to test migration, and without --dry-run to execute it, see `/config/settings.php` for migration specific settings.
+Using [doctrine orm](https://www.doctrine-project.org/projects/orm.html) with [migrations](https://www.doctrine-project.org/projects/migrations.html) support.
+
+- `make enter` to connect to docker container.
+- `./bin/doctrine` to run dedicated doctrine console commands.
+  - Must be run within docker container because connection settings are using docker network host and also will make sure all env requirements are met.
+- `./bin/doctrine migrations:diff` to generate migration.
+  - new migrations will be located in `/resources/db/migrations`.
+- `./bin/doctrine migrations:migrate --dry-run` to test migrations to be run, and without --dry-run to execute them
+- see `/config/settings.php` for migration specific settings.
 - See [Doctrine Migrations docs](https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/managing-migrations.html) for extensive usage help.
 
 ## TODO
