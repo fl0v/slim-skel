@@ -10,4 +10,40 @@ use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 include_once __DIR__ . '/../config/env.php';
 $container  = require APP_ROOT . '/config/bootstrap.php';
 
-ConsoleRunner::run(new SingleManagerProvider($container->get(EntityManager::class)));
+$entityManager = $container->get(EntityManager::class);
+
+/*
+ * Will create a Symfony console application instance and add default orm/dbal commands
+ */
+$application = ConsoleRunner::createApplication(
+    new SingleManagerProvider($entityManager),
+);
+
+/*
+ * Add migrations commands
+ * @see https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/custom-integration.html
+ */
+$config = $container->get(\App\Helper\Config::class);
+$migrationSettings = $config->get('migrations');
+$dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
+    new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationSettings),
+    new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($entityManager),
+);
+$application->addCommands([
+    new Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\ExecuteCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\GenerateCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\LatestCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\ListCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\MigrateCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\RollupCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand($dependencyFactory),
+    new Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory),
+]);
+
+/*
+ * Run
+ */
+$application->run();

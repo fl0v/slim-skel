@@ -8,14 +8,20 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 
-#[Entity, Table(name: 'category')]
+#[Entity]
+#[Table(name: 'category')]
 final class Category
 {
-    #[Id, Column(type: 'integer'), GeneratedValue(strategy: 'AUTO')]
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue(strategy: 'AUTO')]
     private int $id;
 
-    #[Column(type: 'string', unique: true, nullable: false)]
+    #[Column(type: 'string', nullable: true)]
     private string $name;
+
+    #[Column(type: 'string', unique: true, nullable: false)]
+    private string $slug;
 
     public function __construct(string $name)
     {

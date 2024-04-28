@@ -17,11 +17,18 @@ Run `make up` to start docker containers and application (will listen on localho
 Run `make test` to run tests (inside container).
 Run `make` to see other commands (see Makefile).
 
+## DB
+
+- Integration uses doctrine with migrations support.
+- Use `./bin/doctrine` to run dedicated console application, but it must be run within docker container because connection settings are using docker network host and also will make sure all env requirements are met (use `make enter` to connect to docker container).
+- After altering entities run `./bin/doctrine migrations:diff` to generate migration, new migrations will be located in `/resources/db/migrations`.
+- Run `./bin/doctrine migrations:migrate --dry-run` to test migration, and without --dry-run to execute it, see `/config/settings.php` for migration specific settings.
+- See [Doctrine Migrations docs](https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/managing-migrations.html) for extensive usage help.
+
 ## TODO
 - json parser middleware
-- Abstraction for MySql
-- Abstraction for mongodb
-- Cache implementation
+- MongoDb integration
+- Fix cache/memcache integration
 - proper `make install` to copy env file and run migrations
 - add tracy https://github.com/semhoun/runtracy
 - data grid abstraction, 

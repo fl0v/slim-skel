@@ -18,7 +18,6 @@ use Symfony\Component\Console\Application as Console;
 use Symfony\Component\HttpFoundation\Session\SessionInterface as Session;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -95,7 +94,7 @@ return [
      * Cache
      */
 
-//    CacheItemPoolInterface::class => function (Cotnainer $container, Config $config) {
+//    CacheItemPoolInterface::class => function (Container $container, Config $config) {
 //        //$cache = $container->get(MemcachedAdapter::class);
 //        $cache = new MemcachedAdapter();
 //

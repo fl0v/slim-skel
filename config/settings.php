@@ -30,9 +30,9 @@ return [
         // filesystem
         'path' => APP_ROOT . '/runtime/cache',
     ],
-     'doctrine' => [
+    'doctrine' => [
         'debug' => APP_DEBUG, // in debug mode will not cache metadata
-        'metadata_paths' => [APP_ROOT . '/src/Db'], // will search for yml, xml, anotations, comments, attributes
+        'metadata_paths' => [APP_ROOT . '/src/Db'], // will search for yml, xml, annotations, comments, attributes
         'connection' => [
             'driver' => 'pdo_mysql',
             'host' => 'mysql',
@@ -42,5 +42,23 @@ return [
             'password' => 'password',
             'charset' => 'utf8mb4'
         ],
+    ],
+    'migrations' => [
+        'table_storage' => [
+            'table_name' => 'migrations',
+            'version_column_name' => 'version',
+            'version_column_length' => 191,
+            'executed_at_column_name' => 'executed_at',
+            'execution_time_column_name' => 'execution_time',
+        ],
+        'migrations_paths' => [
+            'App\Migrations' => APP_ROOT . '/resources/db/migrations',
+        ],
+        'all_or_nothing' => true,
+        'transactional' => true,
+        'check_database_platform' => true,
+        'organize_migrations' => 'none',
+        'connection' => null,
+        'em' => null,
     ],
 ];
