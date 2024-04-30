@@ -23,7 +23,7 @@ $application = ConsoleRunner::createApplication(
  * @see https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/custom-integration.html
  */
 $config = $container->get(\App\Helper\Config::class);
-$migrationSettings = $config->get('migrations');
+$migrationSettings = $config->get('doctrine.migrations');
 $dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
     new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationSettings),
     new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($entityManager),

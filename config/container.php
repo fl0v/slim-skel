@@ -7,6 +7,8 @@
 use App\Helper\Config;
 use App\Helper\View;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Configuration;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -91,6 +93,8 @@ return [
             $container->get(Configuration::class),
         );
     },
+
+    EntityManagerInterface::class => DI\get(EntityManager::class),
 
     /*
      * Cache
