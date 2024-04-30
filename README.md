@@ -12,7 +12,6 @@ Inside docker container will start PHP 8.2 (FPM), mongodb, mysql, memcached.
 ## Installation
 
 - Install Make and Docker locally.
-- Copy config/env.sample.devel.php to config/env.php.
 - Run `make up` to start docker containers and application (will listen on localhost:8080).
 - Run `make test` to run tests (inside container).
 - Run `make` to see other commands (see Makefile).
@@ -31,19 +30,20 @@ Using [doctrine orm](https://www.doctrine-project.org/projects/orm.html) with [m
 - See [Doctrine Migrations docs](https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/managing-migrations.html) for extensive usage help.
 
 ## TODO
+
+- fix/update github actions config
+- fix/update scrutinizer config
 - json parser middleware
 - MongoDb integration
 - Fix cache/memcache integration
 - proper `make install` to copy env file and run migrations
 - add tracy https://github.com/semhoun/runtracy
-- data grid abstraction, 
+- data grid abstraction
 
-## Features
+## References
 
-This project is based on best practices and industry standards:
-
--[Standard PHP package skeleton](https://github.com/php-pds/skeleton)
-- [Slim 4 Skeleton](https://github.com/odan/slim4-skeleton)
+- [Standard PHP package skeleton](https://github.com/php-pds/skeleton)
+- Based on [odan/slim4-skeleton](https://github.com/odan/slim4-skeleton)
 - HTTP router (Slim)
 - HTTP message interfaces (PSR-7)
 - HTTP Server Request Handlers, Middleware (PSR-15)
@@ -51,8 +51,4 @@ This project is based on best practices and industry standards:
 - Autoloader (PSR-4)
 - Logger (PSR-3)
 - Code styles (PSR-12)
-- Single action controllers
-- Unit- and integration tests
-- Tested with [Github Actions](https://github.com/odan/slim4-skeleton/actions) and [Scrutinizer CI](https://scrutinizer-ci.com/)
 - [PHPStan](https://github.com/phpstan/phpstan)
-- PHP CS Fixer and PHPCS

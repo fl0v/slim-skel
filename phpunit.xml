@@ -23,10 +23,10 @@
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
-            <directory>scripts</directory>            
+            <directory>bin</directory>
             <directory>docs</directory>
             <directory>public</directory>
-            <directory>templates</directory>
+            <directory>resources</directory>
             <directory>runtime</directory>
             <directory>vendor</directory>
         </exclude>
