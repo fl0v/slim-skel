@@ -63,5 +63,11 @@ return [
             'connection' => null,
             'em' => null,
         ],
+        'mongodb' => [
+            'dsn' => $_ENV['MONGODB_DSN'] ?? 'mongodb://localhost',
+            'documents' => [APP_ROOT . '/src/Mongo/Documents'], // where all mongo mapped entities will be located
+            'hydrators' => APP_ROOT . '/src/Mongo/Hydrators',
+            'hydratorsNamespace' => '\App\Mongo\Hydrators',
+        ],
     ],
 ];

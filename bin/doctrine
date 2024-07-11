@@ -3,13 +3,12 @@
 
 declare(strict_types=1);
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 
 $container  = require __DIR__ . '/../config/bootstrap.php';
 
-$entityManager = $container->get(EntityManager::class);
+$entityManager = $container->get(\Doctrine\ORM\EntityManager::class);
 
 /*
  * Will create a Symfony console application instance and add default orm/dbal commands
@@ -28,6 +27,17 @@ $dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
     new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationSettings),
     new \Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager($entityManager),
 );
+
+/*
+ * Mongo helpers
+ */
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet([
+    'dm' => new \Doctrine\ODM\MongoDB\Tools\Console\Helper\DocumentManagerHelper(
+        $container->get(\Doctrine\ODM\MongoDB\DocumentManager::class),
+    ),
+]);
+$application->setHelperSet($helperSet);
+
 $application->addCommands([
     new Doctrine\Migrations\Tools\Console\Command\DiffCommand($dependencyFactory),
     new Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand($dependencyFactory),
@@ -40,6 +50,15 @@ $application->addCommands([
     new Doctrine\Migrations\Tools\Console\Command\StatusCommand($dependencyFactory),
     new Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand($dependencyFactory),
     new Doctrine\Migrations\Tools\Console\Command\VersionCommand($dependencyFactory),
+    // Mongo
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateHydratorsCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\GenerateProxiesCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\QueryCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\ClearCache\MetadataCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\CreateCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\UpdateCommand(),
+    new Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\ShardCommand(),
 ]);
 
 /*

@@ -12,7 +12,7 @@ RUN apk add vim git curl make mc zip unzip
 RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS
 
 # BASE REQ
-RUN docker-php-ext-install -j "$(nproc)" \         
+RUN docker-php-ext-install -j "$(nproc)" \
     opcache \
     bcmath \
     exif
@@ -22,10 +22,15 @@ RUN apk add libzip-dev \
     && docker-php-ext-install zip
 
 # DB
-RUN docker-php-ext-install \ 
+RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
     mysqli
+
+RUN apk add curl-dev openssl openssl-dev \
+    && pecl channel-update pecl.php.net \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb
 
 # MEMCACHE
 RUN apk add libmemcached libmemcached-dev zlib zlib-dev \
@@ -42,7 +47,7 @@ RUN apk add gmp-dev icu-dev \
     && docker-php-ext-install gmp intl 
 
 # GD
-RUN apk add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev \    
+RUN apk add freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev \
     && docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
