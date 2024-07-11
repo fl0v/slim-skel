@@ -31,13 +31,13 @@ Using [doctrine orm](https://www.doctrine-project.org/projects/orm.html) with [m
 
 ## TODO
 
-- fix/update github actions config
 - fix/update scrutinizer config
 - json parser middleware
 - MongoDb integration
 - Fix cache/memcache integration
 - proper `make install` to copy env file and run migrations
 - add tracy https://github.com/semhoun/runtracy
+- add ecotone https://docs.ecotone.tech/
 - data grid abstraction
 
 ## References
