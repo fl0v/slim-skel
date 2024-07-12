@@ -45,8 +45,8 @@
     "sort-packages": true
   },
   "scripts": {
-      "post-root-package-isntall": [
-          "php -r \"file_exists('.env') || copt('.env.example', '.env');\""
-      ]
+    "post-root-package-isntall": [
+      "php -r \"file_exists('.env') || copt('.env.example', '.env');\""
+    ]
   }
 }
