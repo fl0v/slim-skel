@@ -1,6 +1,8 @@
 <?php
-/** @var \App\Helper\View $this */
-/** @var string $content */
+/**
+ * @var \App\Helpesr\View $this
+ * @var string $content
+ */
 ?>
 <!DOCTYPE html>
 <html lang="<?=$this->getConfig()->get('app.lang', 'en')?>">

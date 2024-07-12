@@ -1,11 +1,10 @@
 <?php
-
 /**
  * Container definitions.
  */
 
-use App\Helper\Config;
-use App\Helper\View;
+use App\Helpers\Config;
+use App\Helpers\View;
 use Doctrine\DBAL\Connection;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 use Doctrine\ODM\MongoDB\DocumentManager;

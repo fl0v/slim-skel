@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mongo\Documents;
+namespace App\Db\Documents;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;

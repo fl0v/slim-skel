@@ -1,6 +1,7 @@
 <?php
 
-use App\Helper\Config;
+use App\Helpers\Config;
+use App\Helpers\LoggingMiddleware;
 use Slim\App;
 
 return function (App $app, Config $config) {
@@ -14,5 +15,5 @@ return function (App $app, Config $config) {
         $errorSettings['logErrorDetails'] ?? true,
     ); // Handle exceptions
 
-    $app->add(\App\Helper\LoggingMiddleware::class);
+    $app->add(LoggingMiddleware::class);
 };

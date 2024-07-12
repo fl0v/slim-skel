@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
-use App\Helper\Config;
-use App\Helper\View;
+use App\Helpers\Config;
+use App\Helpers\View;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface as Logger;

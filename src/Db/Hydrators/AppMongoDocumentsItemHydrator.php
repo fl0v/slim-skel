@@ -1,6 +1,6 @@
 <?php
 
-namespace \App\Mongo\Hydrators;
+namespace App\Db\Hydrators;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Hydrator\HydratorException;

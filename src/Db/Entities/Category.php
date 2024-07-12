@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Entity;
+namespace App\Db\Entities;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -36,5 +36,10 @@ final class Category
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 }
