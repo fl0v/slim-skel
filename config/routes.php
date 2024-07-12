@@ -1,6 +1,6 @@
 <?php
 
-use App\Helper\Config;
+use App\Helpers\Config;
 use App\Http\Home\HomeController;
 use App\Http\Payment\PaymentChargeAction;
 use App\Http\Payment\PaymentFormAction;

@@ -1,12 +1,13 @@
 <?php
-
 /**
  * Container definitions.
  */
 
-use App\Helper\Config;
-use App\Helper\View;
+use App\Helpers\Config;
+use App\Helpers\View;
 use Doctrine\DBAL\Connection;
+use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Configuration;
@@ -95,6 +96,26 @@ return [
     },
 
     EntityManagerInterface::class => DI\get(EntityManager::class),
+
+    /*
+     * MongoDb
+     */
+
+    DocumentManager::class => function (Container $container, Config $config) {
+        $settings = $config->get('doctrine.mongodb');
+
+        $client = new \MongoDB\Client($settings['dsn'] ?? '', [], ['typeMap' => DocumentManager::CLIENT_TYPEMAP]);
+        $config = new \Doctrine\ODM\MongoDB\Configuration();
+        $config->setHydratorDir($settings['hydrators'] ?? '');
+        $config->setHydratorNamespace($settings['hydratorsNamespace'] ?? '');
+        if (!empty($settings['documents'])) {
+            $config->setMetadataDriverImpl(AnnotationDriver::create($settings['documents']));
+        }
+
+        // ...
+
+        return DocumentManager::create($client, $config);
+    },
 
     /*
      * Cache

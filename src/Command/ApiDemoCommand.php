@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'app:api-demo',
-    description: 'MAke api request.',
+    description: 'Make api request.',
     aliases: ['app:ad'],
     hidden: false
 )]

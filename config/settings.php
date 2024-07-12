@@ -35,7 +35,10 @@ return [
     ],
     'doctrine' => [
         'debug' => APP_DEBUG, // in debug mode will not cache metadata
-        'metadata_paths' => [APP_ROOT . '/src/Db'], // will search for yml, xml, annotations, comments, attributes
+        'metadata_paths' => [ // will search for yml, xml, annotations, comments, attributes
+            APP_ROOT . '/src/Db/Entities',
+            APP_ROOT . '/src/Db/Repositories'
+        ],
         'connection' => [
             'driver' => $_ENV['MYSQL_DRIVER'] ?? 'pdo_mysql',
             'host' => $_ENV['MYSQL_HOST'] ?? 'localhost',
@@ -62,6 +65,12 @@ return [
             'organize_migrations' => 'none',
             'connection' => null,
             'em' => null,
+        ],
+        'mongodb' => [
+            'dsn' => $_ENV['MONGODB_DSN'] ?? 'mongodb://localhost',
+            'documents' => [APP_ROOT . '/src/Db/Documents'], // where all mongo mapped entities will be located
+            'hydrators' => APP_ROOT . '/src/Db/Hydrators',
+            'hydratorsNamespace' => 'App\Db\Hydrators',
         ],
     ],
 ];

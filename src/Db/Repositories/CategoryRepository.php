@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Db\Service;
+namespace App\Db\Repositories;
 
-use App\Db\Entity\Category;
+use App\Db\Entities\Category;
 use Doctrine\ORM\EntityManager;
 
-final readonly class CategoryService
+final readonly class CategoryRepository
 {
     public function __construct(
         private EntityManager $entityManager,

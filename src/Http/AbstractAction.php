@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
-use App\Helper\Config;
-use App\Helper\View;
+use App\Helpers\Config;
+use App\Helpers\View;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface as Logger;
@@ -39,10 +41,6 @@ abstract class AbstractAction
 
     /**
      * @TODO add content negotiation xml/json + pretty json on devel
-     *
-     * @param Response $response
-     * @param array $data
-     * @param ?string $action
      */
     protected function returnData(Response $response, array $data, ?string $action = null): Response
     {
