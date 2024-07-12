@@ -1,9 +1,9 @@
 <?php
 
 use App\Helpers\Config;
-use App\Http\Home\HomeController;
-use App\Http\Payment\PaymentChargeAction;
-use App\Http\Payment\PaymentFormAction;
+use App\Actions\Home\HomeController;
+use App\Actions\Payment\PaymentChargeAction;
+use App\Actions\Payment\PaymentFormAction;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 

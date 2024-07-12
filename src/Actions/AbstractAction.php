@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http;
+namespace App\Actions;
 
 use App\Helpers\Config;
 use App\Helpers\View;
