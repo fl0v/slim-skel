@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Helpesr\View $this
+ * @var \App\Helpers\View $this
  * @var string $content
  */
 ?>

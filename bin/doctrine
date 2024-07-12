@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use App\Helpers\Config;
 
 $container  = require __DIR__ . '/../config/bootstrap.php';
 
@@ -21,7 +22,7 @@ $application = ConsoleRunner::createApplication(
  * Add migrations commands
  * @see https://www.doctrine-project.org/projects/doctrine-migrations/en/3.7/reference/custom-integration.html
  */
-$config = $container->get(\App\Helper\Config::class);
+$config = $container->get(Config::class);
 $migrationSettings = $config->get('doctrine.migrations');
 $dependencyFactory = \Doctrine\Migrations\DependencyFactory::fromEntityManager(
     new \Doctrine\Migrations\Configuration\Migration\ConfigurationArray($migrationSettings),

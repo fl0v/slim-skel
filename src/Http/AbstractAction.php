@@ -41,10 +41,6 @@ abstract class AbstractAction
 
     /**
      * @TODO add content negotiation xml/json + pretty json on devel
-     *
-     * @param Response $response
-     * @param array $data
-     * @param ?string $action
      */
     protected function returnData(Response $response, array $data, ?string $action = null): Response
     {
