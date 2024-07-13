@@ -70,15 +70,13 @@ class ArrayHelper
     /**
      * @param array|object $array array or object to extract value from
      * @param string|Closure|array $key key name of the array element, an array of keys or property name of the object,
-     * or an anonymous function returning the value. The anonymous function signature should be:
-     * `function($array, $defaultValue)`.
-     * The possibility to pass an array of keys is available since version 2.0.4.
+     *                                  or an anonymous function returning the value. The anonymous function signature should be:
+     *                                  `function($array, $defaultValue)`.
+     *                                  The possibility to pass an array of keys is available since version 2.0.4.
      * @param mixed $default the default value to be returned if the specified array key does not exist. Not used when
-     * getting value from an object.
-     *
-     * @throws Exception
-     *
+     *                       getting value from an object.
      * @return mixed the value of the element if found, default value otherwise
+     * @throws Exception
      */
     public static function get(mixed $array, mixed $key, mixed $default = null): mixed
     {
@@ -129,7 +127,6 @@ class ArrayHelper
     /**
      * @param array $data
      * @param array $keys
-     *
      * @return array returned array will have strict structure that matches the provided keys with values from data
      */
     public static function export(array $data, array $keys): array
@@ -163,7 +160,6 @@ class ArrayHelper
      * The key values will never be an array, even if empty. Empty arrays will be dropped.
      *
      * @see https://stackoverflow.com/a/10424516
-     *
      * @param array $array
      * @param string $prepend
      */
@@ -201,7 +197,6 @@ class ArrayHelper
      *
      * @param array $array (Original array)
      * @param string $key (Key to check in "dot" notation)
-     *
      * @throws Exception
      */
     public static function has(array $array, string $key): bool
@@ -215,7 +210,6 @@ class ArrayHelper
      * @param array $array (Original array)
      * @param string $value (Value to return in "dot" notation)
      * @param string|null $key (Optionally how to key the returned array in "dot" notation)
-     *
      * @throws Exception
      */
     public static function pluck(array $array, string $value, ?string $key = null): array
@@ -322,15 +316,13 @@ class ArrayHelper
     }
 
     /**
-     * Rename array keys while preserving their order.
-     *
      * @param array $array (Original array)
      * @param array $keys (Key/value pairs to rename)
+     * @return array copy of orginal array with renamed keys in original order.
      */
     public static function renameKeys(array $array, array $keys): array
     {
         $new_array = [];
-
         foreach ($array as $k => $v) {
             if (array_key_exists($k, $keys)) {
                 $new_array[$keys[$k]] = $v;
@@ -343,11 +335,9 @@ class ArrayHelper
     }
 
     /**
-     * Order an array based on an array of keys.
-     * Keys from the $order array which do not exist in the original array will be ignored.
-     *
      * @param array $array (Original array)
-     * @param array $order (Array of keys in the order to be returned)
+     * @param array $order enforrce key order
+     * @return array original array sorted by $order of keys.
      */
     public static function order(array $array, array $order): array
     {
@@ -355,9 +345,7 @@ class ArrayHelper
     }
 
     /**
-     * Convert array into a query string.
-     *
-     * @param array $array (Original array)
+     * @return string url query string built from key value array
      */
     public static function query(array $array): string
     {
@@ -365,10 +353,9 @@ class ArrayHelper
     }
 
     /**
-     * Return an array of values which exist in a given array.
-     *
      * @param array $array
      * @param array $values
+     * @return array values that exist in first array (dot format).
      */
     public static function getAnyValues(array $array, array $values): array
     {
@@ -376,10 +363,9 @@ class ArrayHelper
     }
 
     /**
-     * Do any values exist in a given array.
-     *
      * @param array $array
      * @param array $values
+     * @return bool if any values exist in a given array.
      */
     public static function hasAnyValues(array $array, array $values): bool
     {
@@ -387,12 +373,9 @@ class ArrayHelper
     }
 
     /**
-     * Do all values exist in a given array.
-     *
      * @param array $array
      * @param array $values
-     *
-     * @return bool
+     * @return bool if all values exist in a given array.
      */
     public static function hasAllValues(array $array, array $values): bool
     {

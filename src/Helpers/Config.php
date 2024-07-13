@@ -14,13 +14,7 @@ class Config
     {
         $this->config = $config;
     }
-
-    /**
-     * @param string $key
-     * @param mixed|null $default
-     *
-     * @throws Exception
-     */
+    
     public function get(string $key = '', mixed $default = null): mixed
     {
         return ArrayHelper::get($this->config, $key, $default);
