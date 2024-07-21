@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Components\FancyGrid;
-
-use App\Helpers\ArrayHelper;
+namespace App\Helpers;
 
 class HtmlHelper
 {

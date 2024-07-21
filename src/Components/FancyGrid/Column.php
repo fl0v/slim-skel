@@ -6,6 +6,18 @@ namespace App\Components\FancyGrid;
 
 class Column implements \JsonSerializable
 {
+    public const TYPE_STRING = 'string';
+
+    public const DEFAULT_TYPE = self::TYPE_STRING;
+    public const DEFAULT_WIDTH = 100;
+
+    public const DEFAULT_PARAMS = [
+        'type' => Column::DEFAULT_TYPE,
+        'width' => Column::DEFAULT_WIDTH,
+        'editable' => false,
+        'sortable' => false,
+    ];
+
     protected string $name;
     protected ?string $label = null;
 
@@ -21,7 +33,7 @@ class Column implements \JsonSerializable
         $this->label = $label;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'name' => $this->name,

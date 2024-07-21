@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use App\Actions\AbstractAction;
 use Psr\Container\ContainerInterface as Container;
 
 class View extends \Slim\Views\PhpRenderer
@@ -11,6 +12,7 @@ class View extends \Slim\Views\PhpRenderer
     protected bool $debug = false;
     protected Config $config;
     protected Container $container;
+    protected AbstractAction $action;
 
     public function setDebug(bool $debug): void
     {
@@ -41,6 +43,16 @@ class View extends \Slim\Views\PhpRenderer
     public function getContainer(): Container
     {
         return $this->container;
+    }
+
+    public function setAction(AbstractAction $action): void
+    {
+        $this->action = $action;
+    }
+
+    public function getAction(): AbstractAction
+    {
+        return $this->action;
     }
 
     public function withLayout(string $layout = ''): static

@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace App\Components\FancyGrid;
 
+use App\Helpers\HtmlHelper;
+
 class FancyGridBuilder
 {
-    protected array $assets = ['fancy.min.js', 'fancy.min.css'];
-    protected array $assetsDebug = ['fancy.js', 'fancy.css'];
+    protected array $assets = ['fancy.full.min.js', 'fancy.min.css'];
+    protected array $assetsDebug = ['fancy.full.js', 'fancy.css'];
 
     protected string $assetsBaseUrl = '';
     protected bool $debug = false;
@@ -24,10 +26,10 @@ class FancyGridBuilder
         $this->debug = $options['debug'] ?? false;
     }
 
-    public function fancygrid(array $options = []): FancyGrid
+    public function buildFancyGrid(DataProvider $dataProvider, array $columns, array $options = []): FancyGrid
     {
         $this->includeAssets = true;
-        return new FancyGrid($options);
+        return new FancyGrid($dataProvider, $columns, $options);
     }
 
     public function setAssetsBaseUrl(string $baseUrl): void
@@ -42,7 +44,9 @@ class FancyGridBuilder
 
     public function htmlAssets(): string
     {
-        $assets = $this->debug ? $this->assetsDebug : $this->assets;
+        if (!$this->includeAssets) {
+            return '';
+        }
         $html = array_reduce(
             $this->debug ? $this->assetsDebug : $this->assets,
             function ($carry, $value) {

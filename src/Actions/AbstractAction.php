@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Components\FancyGrid\FancyGridBuilder;
 use App\Helpers\Config;
 use App\Helpers\View;
 use Psr\Container\ContainerInterface as Container;
@@ -76,11 +77,18 @@ abstract class AbstractAction
 
     protected function getView(): View
     {
-        return $this->getContainer()->get(View::class);
+        $view = $this->getContainer()->get(View::class);
+        $view->setAction($this);
+        return $view;
     }
 
     protected function getSession(): Session
     {
         return $this->getContainer()->get(Session::class);
+    }
+
+    public function getFancyGridBuilder(): FancyGridBuilder
+    {
+        return $this->getContainer()->get('FancyGridBuilder');
     }
 }

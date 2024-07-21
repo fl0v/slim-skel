@@ -182,7 +182,7 @@ return [
         return $logger;
     },
 
-    'fancygrid' => function (Config $config) {
-        return new \App\Components\FancyGrid\FancyGridBuilder($config->get('fancygrid'));
+    'FancyGridBuilder' => function (Config $config) {
+        return new \App\Components\FancyGrid\FancyGridBuilder($config->get('FancyGridBuilder'));
     }
 ];

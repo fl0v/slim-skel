@@ -14,9 +14,4 @@ abstract class DataProvider
      */
     abstract public function getColumns(): array;
     abstract public function getData(): \Iterator;
-
-
-    
-
-
 }

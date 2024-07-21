@@ -1,10 +1,13 @@
 <?php
 /**
  * @var \App\Helpers\View $this
- * @var \App\Components\FancyGrid\FancyGridBuilder $fancygridBuilder
+ * @var \App\Components\FancyGrid\FancyGrid $fancyGrid
  */
-$fancygridBuilder = $this->getContainer()->get('fancygrid');
+$gridHtml = $fancyGrid->gridHtml();
+
 ?>
 <h1>FancyGrid demo</h1>
 
-<?=$fancygridBuilder->htmlAssets()?>
+<div class="container">
+    <?=$gridHtml?>
+</div>

@@ -76,7 +76,7 @@ return [
     /*
      * FancyGrid
      */
-    'fancygrid' => [
+    'FancyGridBuilder' => [
         'assetsBaseUrl' => '/assets/fancygrid',
         'debug' => APP_DEBUG,
     ],
