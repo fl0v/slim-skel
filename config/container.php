@@ -147,13 +147,14 @@ return [
         return $session;
     },
 
-    View::class => function (Config $config) {
+    View::class => function (Config $config, Container $container) {
         $settings = $config->get('view');
         $view = new View($settings['path']);
         $view->setAttributes($settings['attributes'] ?? []);
         $view->setLayout($settings['layout'] ?? '');
         $view->setDebug($settings['debug'] ?? false);
         $view->setConfig($config);
+        $view->setContainer($container);
 
         return $view;
     },
@@ -180,4 +181,8 @@ return [
 
         return $logger;
     },
+
+    'fancygrid' => function (Config $config) {
+        return new \App\Components\FancyGrid\FancyGridBuilder($config->get('fancygrid'));
+    }
 ];

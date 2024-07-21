@@ -381,4 +381,14 @@ class ArrayHelper
     {
         return count(array_intersect($values, static::dot($array))) == count($values);
     }
+
+    public static function reduceAssoc(array $array, callable $callback, mixed $initial = null): mixed
+    {
+        $carry = $initial;
+        foreach ($array as $key => $value) {
+            $carry = $callback($carry, $value, $key);
+        }
+
+        return $carry;
+    }
 }

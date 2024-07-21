@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use Psr\Container\ContainerInterface as Container;
+
 class View extends \Slim\Views\PhpRenderer
 {
     protected bool $debug = false;
     protected Config $config;
+    protected Container $container;
 
     public function setDebug(bool $debug): void
     {
@@ -28,6 +31,16 @@ class View extends \Slim\Views\PhpRenderer
     public function getConfig(): Config
     {
         return $this->config;
+    }
+
+    public function setContainer(Container $container): void
+    {
+        $this->container = $container;
+    }
+
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 
     public function withLayout(string $layout = ''): static

@@ -4,6 +4,8 @@
     "ext-json": "*",
     "ext-memcached": "*",
     "ext-mongodb": "*",
+    "bower-asset/bootstrap": "^5.3",
+    "bower-asset/fancygrid": "^1.7",
     "doctrine/annotations": "^2.0",
     "doctrine/dbal": "^4.0",
     "doctrine/migrations": "^3.7",
@@ -48,5 +50,11 @@
     "post-root-package-isntall": [
       "php -r \"file_exists('.env') || copt('.env.example', '.env');\""
     ]
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
 }

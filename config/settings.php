@@ -73,4 +73,11 @@ return [
             'hydratorsNamespace' => 'App\Db\Hydrators',
         ],
     ],
+    /*
+     * FancyGrid
+     */
+    'fancygrid' => [
+        'assetsBaseUrl' => '/assets/fancygrid',
+        'debug' => APP_DEBUG,
+    ],
 ];
